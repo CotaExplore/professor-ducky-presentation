@@ -378,9 +378,8 @@ function speakSlide(callback) {
   var audio = new Audio(url);
   window._vrAudio = audio;
   audio.addEventListener('ended', function() { stopVoice(); if (callback) callback(); });
-  audio.addEventListener('error', function() { stopVoice(); });
-  audio.load();
-  audio.play().catch(function() { stopVoice(); });
+  audio.addEventListener('error', function() { stopVoice(); if (callback) callback(); });
+  audio.play().catch(function() { stopVoice(); if (callback) callback(); });
 }
 
 function toggleVoice() {
