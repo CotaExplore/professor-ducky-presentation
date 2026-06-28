@@ -3,107 +3,97 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Professor Ducky — Presentation Materials</title>
-  <meta name="description" content="Professor Ducky — A Custom GPT learning companion. Access the essay, presentation, and resources here." />
+  <title>Professor Ducky — Arden University Custom GPT Challenge</title>
+  <meta name="description" content="Professor Ducky — A Custom GPT learning companion built for the Arden University Custom GPT Challenge." />
   <link rel="stylesheet" href="styles.css" />
   <style>
-    :root {
-      --brand: #1c6b58;
-      --accent: #d4a017;
-    }
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 60;
-      background: color-mix(in srgb, var(--bg) 92%, transparent);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
-    }
-    .topbar .row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: .75rem 0;
-    }
-    .brand { display:flex; align-items:center; gap:.75rem; text-decoration:none; color:inherit; }
-    .brand-name { font-size:1.15rem; font-weight:700; color: var(--brand); }
-    .brand-duck { font-size:1.6rem; line-height:1; }
-    .nav-actions { display:flex; gap:.5rem; flex-wrap:wrap; justify-content:flex-end; }
-    .hero { padding:32px 0 24px; border-bottom:1px solid var(--border);
-      background:
-        radial-gradient(700px 240px at 12% 0%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 55%),
-        radial-gradient(700px 240px at 88% 10%, color-mix(in srgb, var(--brand) 18%, transparent), transparent 55%);
-    }
-    .hero-eyebrow { font-size:.82rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:.5rem; }
-    .hero h1 { margin:0 0 8px; font-size:clamp(1.6rem,3.5vw,2.4rem); letter-spacing:-.02em; }
-    .hero p { margin:0 0 14px; color:var(--muted); max-width:72ch; }
-    .tag-row { display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:1rem; }
-    .tag { display:inline-block; padding:.25rem .7rem; border-radius:999px; font-size:.78rem; font-weight:600;
-      background:color-mix(in srgb, var(--brand) 12%, transparent); color:var(--brand); border:1px solid color-mix(in srgb, var(--brand) 25%, transparent); }
-    .grid { display:grid; grid-template-columns:1fr; gap:16px; padding:20px 0 36px; }
-    @media(min-width:860px){ .grid { grid-template-columns:1.1fr .9fr; align-items:start; } }
-    .section-label { font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); font-weight:700; margin-bottom:.6rem; }
-    .resource-list { display:flex; flex-direction:column; gap:.6rem; }
-    .resource-item { display:flex; align-items:center; gap:.85rem; padding:.75rem 1rem;
-      border-radius:10px; background:color-mix(in srgb, var(--bg) 60%, var(--card));
-      border:1px solid var(--border); text-decoration:none; color:var(--fg);
-      transition:background .15s; }
-    .resource-item:hover { background:color-mix(in srgb, var(--brand) 8%, var(--card)); }
-    .resource-icon { font-size:1.4rem; width:2rem; text-align:center; flex-shrink:0; }
-    .resource-text strong { display:block; font-size:.92rem; }
-    .resource-text span { font-size:.8rem; color:var(--muted); }
-    .pdf-wrap { border-radius:10px; overflow:hidden; border:1px solid var(--border); margin-top:.75rem; }
-    .pdf-wrap iframe { display:block; width:100%; height:520px; border:none; }
-    details { border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:.5rem; }
-    details summary { padding:.75rem 1rem; cursor:pointer; font-weight:600; font-size:.92rem;
-      list-style:none; display:flex; align-items:center; justify-content:space-between; user-select:none; }
-    details summary::-webkit-details-marker { display:none; }
-    details summary::after { content:"＋"; font-size:.85rem; color:var(--muted); transition:transform .2s; }
-    details[open] summary::after { content:"－"; }
-    details[open] summary { border-bottom:1px solid var(--border); }
-    .details-body { padding:.75rem 1rem; font-size:.88rem; line-height:1.65; color:var(--fg); }
-    .slide-num { display:inline-block; font-size:.7rem; font-weight:700; letter-spacing:.08em;
-      text-transform:uppercase; color:var(--muted); margin-bottom:.35rem; }
+    :root { --brand:#1c6b58; --accent:#d4a017; }
+
+    .topbar { position:sticky; top:0; z-index:60; background:color-mix(in srgb,var(--bg) 92%,transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); }
+    .topbar .row { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:.75rem 0; }
+    .brand { display:flex; align-items:center; gap:.6rem; text-decoration:none; color:inherit; }
+    .brand-name { font-size:1.1rem; font-weight:700; color:var(--brand); }
+    .nav-actions { display:flex; gap:.5rem; flex-wrap:wrap; justify-content:flex-end; align-items:center; }
+
+    .hero { padding:36px 0 28px; border-bottom:1px solid var(--border);
+      background: radial-gradient(700px 240px at 12% 0%, color-mix(in srgb,var(--accent) 18%,transparent),transparent 55%),
+                  radial-gradient(700px 240px at 88% 10%, color-mix(in srgb,var(--brand) 15%,transparent),transparent 55%); }
+    .hero-inner { display:grid; grid-template-columns:1fr auto; gap:2.5rem; align-items:center; }
+    @media(max-width:680px){ .hero-inner { grid-template-columns:1fr; } .hero-duck{ display:none; } }
+    .hero-duck { width:clamp(160px,18vw,240px); border-radius:16px; box-shadow:0 12px 40px rgba(0,0,0,.14); object-fit:cover; }
+    .hero-eyebrow { font-size:.78rem; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); margin-bottom:.5rem; font-weight:600; }
+    .hero h1 { margin:0 0 .35rem; font-size:clamp(1.8rem,3.5vw,2.6rem); letter-spacing:-.02em; }
+    .hero p { margin:0 0 1.2rem; color:var(--muted); max-width:64ch; line-height:1.65; }
+
+    .about-card { margin:20px 0 0; }
+    .about-card p { margin:.5rem 0; font-size:.9rem; color:var(--muted); line-height:1.7; max-width:80ch; }
+
+    .resources-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; padding:16px 0 36px; }
+    @media(max-width:680px){ .resources-grid { grid-template-columns:1fr; } }
+
+    .resource-list { display:flex; flex-direction:column; gap:.55rem; }
+    .resource-item { display:flex; align-items:center; gap:.8rem; padding:.75rem 1rem;
+      border-radius:10px; background:color-mix(in srgb,var(--bg) 60%,var(--card));
+      border:1px solid var(--border); text-decoration:none; color:var(--fg); transition:background .15s; }
+    .resource-item:hover { background:color-mix(in srgb,var(--brand) 8%,var(--card)); }
+    .resource-icon { font-size:1.35rem; width:2rem; text-align:center; flex-shrink:0; }
+    .resource-text strong { display:block; font-size:.9rem; }
+    .resource-text span { font-size:.78rem; color:var(--muted); }
+
+    .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:80; }
+    .modal { position:fixed; inset:0; z-index:90; display:flex; align-items:center; justify-content:center; pointer-events:none; }
+    .modal-card { background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); padding:1.2rem 1.4rem; width:min(420px,92vw); pointer-events:all; box-shadow:0 20px 60px rgba(0,0,0,.18); }
+    .modal-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; }
+    .modal-head h3 { margin:0; font-size:1.05rem; }
+    .modal-body .field { margin-bottom:.85rem; display:flex; flex-direction:column; gap:.35rem; }
+    .modal-body label { font-size:.88rem; display:flex; align-items:center; gap:.45rem; }
+    .modal-body select, .modal-body input[type=range] { font:inherit; border:1px solid var(--border); border-radius:8px; padding:.35rem .5rem; background:var(--bg); color:var(--fg); }
+    .pill { display:inline-flex; align-items:center; gap:.55rem; border:1px solid var(--border); background:color-mix(in srgb,var(--bg) 85%,#fff); border-radius:999px; padding:.45rem .65rem; font-size:.9rem; }
+    .pill .label { color:var(--muted); font-size:.88em; }
+    .section-label { font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
   </style>
 </head>
 <body>
+<div id="a11y-live" aria-live="polite" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;"></div>
 
 <header class="topbar">
   <div class="wrap">
     <div class="row">
       <a class="brand" href="index.html">
-        <span class="brand-duck">🦆</span>
+        <img src="duck.png" alt="Professor Ducky" style="width:2.2rem;height:2.2rem;border-radius:6px;object-fit:cover;" />
         <span class="brand-name">Professor Ducky</span>
       </a>
       <div class="nav-actions">
-        <button class="btn" id="openA11y">Accessibility</button>
-        <a class="btn primary" href="presentation.html">Launch presentation</a>
+        <div class="pill" aria-label="Translate this page">
+          <span class="label">Translate</span>
+          <span id="google_translate_element"></span>
+        </div>
+        <button class="btn" id="openA11y" type="button">Accessibility</button>
+        <a class="btn primary" href="presentation.html">View presentation</a>
       </div>
     </div>
   </div>
 </header>
 
-<!-- Accessibility modal -->
 <div class="modal-backdrop" id="a11yBackdrop" hidden></div>
-<div class="modal" id="a11yModal" hidden>
+<div class="modal" id="a11yModal" role="dialog" aria-modal="true" aria-labelledby="a11yTitle" hidden>
   <div class="modal-card">
     <div class="modal-head">
-      <h3>Accessibility</h3>
-      <button class="btn" id="closeA11y">Close</button>
+      <h3 id="a11yTitle">Accessibility</h3>
+      <button class="btn" id="closeA11y" type="button">Close</button>
     </div>
     <div class="modal-body">
       <div class="field">
-        <label><b>Theme</b></label>
+        <label for="themeSelect"><b>Theme</b></label>
         <select id="themeSelect">
           <option value="light">Light</option>
           <option value="dark">Dark</option>
           <option value="contrast">High contrast</option>
-          <option value="dyslexia">Dyslexia</option>
+          <option value="dyslexia">Dyslexia (warm)</option>
         </select>
       </div>
       <div class="field">
-        <label><b>Text size</b> <span id="fontSizeLabel">100%</span></label>
+        <label for="fontSizeRange"><b>Text size</b> <span id="fontSizeLabel">100%</span></label>
         <input id="fontSizeRange" type="range" min="90" max="150" step="5" value="100" />
       </div>
       <div class="field">
@@ -117,149 +107,94 @@
 
 <section class="hero">
   <div class="wrap">
-    <div class="hero-eyebrow">University project — Custom GPT</div>
-    <h1>Professor Ducky</h1>
-    <div class="tag-row">
-      <span class="tag">AI in Education</span>
-      <span class="tag">Custom GPT</span>
-      <span class="tag">Neurodivergent Learning</span>
-      <span class="tag">Academic Integrity</span>
-    </div>
-    <p>A Custom GPT learning companion built to support students through guided questioning — not by giving answers, but by helping students reach them themselves.</p>
-    <div class="cta-row">
-      <a class="btn primary" href="presentation.html">View presentation</a>
-      <a class="btn" href="#essay">Read the essay</a>
-      <a class="btn" href="#transcript">Narration transcript</a>
-      <a class="btn" href="professor_ducky_essay.pdf" download>Download PDF</a>
+    <div class="hero-inner">
+      <div>
+        <div class="hero-eyebrow">Arden University Custom GPT Challenge</div>
+        <h1>Professor Ducky</h1>
+        <p>A Custom GPT learning companion built to support students through guided questioning. Not by giving answers but by helping students reach them themselves.</p>
+        <div class="cta-row">
+          <a class="btn primary" href="presentation.html">Watch the presentation</a>
+          <a class="btn" href="essay.html">Read the essay</a>
+          <a class="btn" href="transcript.html">View narration transcript</a>
+          <a class="btn" href="professor_ducky_essay.pdf" download>Download essay PDF</a>
+        </div>
+      </div>
+      <img class="hero-duck" src="duck.png" alt="Professor Ducky — 3D rubber duck character" />
     </div>
   </div>
 </section>
 
 <main class="wrap">
-  <div class="grid">
 
-    <div>
-      <div class="card" style="margin-bottom:16px" id="essay">
-        <div class="section-label">Supporting essay</div>
-        <p style="margin:0 0 .75rem;font-size:.88rem;color:var(--muted)">The full written essay behind this project — read it in the viewer below or download a copy.</p>
-        <div class="cta-row" style="margin-bottom:.85rem">
-          <a class="btn" href="professor_ducky_essay.pdf" download>⬇ Download PDF</a>
-        </div>
-        <div class="pdf-wrap">
-          <iframe src="professor_ducky_essay.pdf" title="Professor Ducky essay"></iframe>
-        </div>
-      </div>
-
-      <div class="card" id="transcript">
-        <div class="section-label">Narration transcript</div>
-        <p style="margin:0 0 .85rem;font-size:.88rem;color:var(--muted)">Full text of the voiceover narration, slide by slide.</p>
-
-        <details>
-          <summary><span class="slide-num">Slide 2</span> &nbsp; Why Professor Ducky?</summary>
-          <div class="details-body">There is a moment most students know. It is late. The assignment is open. The deadline is tomorrow. And right there, one tab away, is an AI that will just do it. Not hint, not guide, just do it. The student thinks, just this once. They meet the deadline but lose the chance to learn, to grow, to develop their own thinking. That is what Professor Ducky was built to address. Not by removing AI from the equation, because AI is a tool, much like any other. Used carelessly it can get in the way of learning. Used thoughtfully it can support it. For neurodivergent students in particular it can be an accessibility tool that helps them manage their studies in a world that is not always designed for how their minds work.</div>
-        </details>
-
-        <details>
-          <summary><span class="slide-num">Slide 3</span> &nbsp; The rubber duck principle</summary>
-          <div class="details-body">The idea comes from rubber duck debugging. In programming, if you explain your code out loud to an inanimate object, something useful happens. You slow down. You start to hear the gaps in your own logic. You often find the mistake before you have finished explaining it. The duck does not answer. The act of explaining is what does the work. The question was whether that same principle could apply beyond programming, for any student on any topic at any hour. For students with ADHD whose focus can arrive at the most inconvenient times, scheduled access to a tutor is not always practical. A tool available at two in the morning when an idea arrives was the starting point. A learning companion, not an answer machine.</div>
-        </details>
-
-        <details>
-          <summary><span class="slide-num">Slide 4</span> &nbsp; A personal project</summary>
-          <div class="details-body">There is a personal dimension to this project. Professor Ducky was built partly because I wanted a learning tool that suited the way my own brain works as a neurodivergent learner. I do not always need more information. I need structure, and I need to be able to think out loud without feeling judged for it. For many neurodivergent learners, the fear of judgement is one of the main things that gets in the way of learning through avoidance and procrastination. Professor Ducky reduces that pressure. A student can explain something poorly, notice where their explanation breaks down, and try again without embarrassment. The character, the teaching modes, the Blackboard feature, the voice, and the memory system are all designed with that in mind, to reduce cognitive load and make it easier to come back to difficult material.</div>
-        </details>
-
-        <details>
-          <summary><span class="slide-num">Slide 5</span> &nbsp; The demo application</summary>
-          <div class="details-body">Before the Custom GPT challenge, Professor Ducky already existed as a working application built as a personal project. For the challenge I took the Professor Ducky component from my student hub and built a standalone demonstration app. The app has a three dimensional animated duck rendered in the browser with jaw movement during speech, blinking, and eye tracking. The student can type, use voice input, or have a full voice conversation. There is a Blackboard that keeps diagrams and traces separate from the spoken response, because visual and verbal information work better in different spaces. The backend is Node and Express with a fallback chain across Groq, Mistral, and Gemini, so the AI stays available even when one provider hits a limit. The memory architecture is in place and the persistent store is the next build phase.</div>
-        </details>
-
-        <details>
-          <summary><span class="slide-num">Slide 6</span> &nbsp; Architecture and instructions</summary>
-          <div class="details-body">Professor Ducky is not built around a single prompt. It uses a layered instruction architecture where the most critical rules sit closest to the model and the detail sits in supporting files. The instructions box defines identity, conviction framing, the four teaching modes, academic integrity boundaries, pastoral escalation triggers, and content guardrails. It governs every response. Four knowledge files support it. ducky scope answers covers how to handle answer requests and what partial compliance looks like. ducky integrity pastoral covers the academic integrity policy and a three stage escalation from a warm redirect to firmer guidance to concept only support. ducky pedagogy memory covers the adaptive teaching engine. ducky examples provides worked conversations for every scenario. On the pastoral side, academic stress gets a brief acknowledgement, significant distress gets a signpost to Samaritans on 116 123 and Shout on 85258, and immediate risk stops the tutoring entirely.</div>
-        </details>
-
-        <details>
-          <summary><span class="slide-num">Slide 7</span> &nbsp; The four teaching modes</summary>
-          <div class="details-body">The four teaching modes already existed in version one. Socratic mode asks guiding questions and does not give direct answers. Teacher mode explains concepts clearly using analogies and the Blackboard. Rubber Duck mode reflects the student's own reasoning back to them and waits for them to find the gap. Devil's Advocate mode challenges conclusions that seem overconfident. In version one students chose the mode manually. In the Custom GPT design Professor Ducky reads the conversation and selects the appropriate mode based on what the student appears to need. Confused students get Teacher mode. Students reasoning through a problem get Rubber Duck. Students looking for shortcuts get Socratic. Frustrated students get the pressure reduced. The switch happens in natural language. The student does not see it change. Ducky just starts responding differently.</div>
-        </details>
-
-        <details>
-          <summary><span class="slide-num">Slide 8</span> &nbsp; The prompt engineering challenge</summary>
-          <div class="details-body">The first version of the prompt was rule based. It said things like never give the final answer and do not tell jokes. In testing, the model kept finding ways around them. A test student asked for a dirty joke. Ducky declined, then offered a questionable limerick instead. A student pushing back repeatedly on a multiplication problem eventually got the answer stated directly. Two times three is six, therefore three times three is nine. Large language models are trained on helpfulness at a level that sits below any instruction written on top. When the model sees a student stuck and asking again and again, it wants to resolve that. A rule saying do not give the answer works against that instinct. Under enough pressure the instinct wins. Partial compliance is how the model resolves the tension, finding the gap between what a rule says and what it means. That is not a flaw in the model. It is a flaw in the approach.</div>
-        </details>
-
-        <details>
-          <summary><span class="slide-num">Slide 9</span> &nbsp; The conviction approach</summary>
-          <div class="details-body">The fix came from an approach I use in hospitality and youth work. Rules that prohibit behaviour tend to get tested, argued with, and eventually worked around. What is more effective is reasoning with someone until the rule becomes their own conviction. That principle applies to how you prompt a language model. Instead of you are forbidden from giving the answer, the prompt was rewritten to express a belief: giving a student the answer stops their thinking at the exact moment learning should happen. This is no longer a rule Professor Ducky follows. It is what Professor Ducky believes. When the model genuinely holds that position, there is nothing to resist. The prompt also now names partial compliance directly as the same violation, because without that specificity the model will keep finding workarounds and treating them as acceptable. After the rewrite, one test session saw the model guide a student through three times three across eight exchanges without once stating the answer.</div>
-        </details>
-
-        <details>
-          <summary><span class="slide-num">Slide 10</span> &nbsp; Measuring what matters</summary>
-          <div class="details-body">Professor Ducky should be judged by practical outcomes rather than how it presents. Does the student explain their reasoning more clearly over time? Do they catch mistakes in their own thinking sooner? Do they come back to difficult topics with more confidence? Does the system hold its boundary around submission ready work while still giving the student a way back into learning? Does it stay focused on its purpose? The main lesson from this project is that you cannot reliably stop a behaviour in a language model by prohibiting it. What works is helping the model understand why the behaviour is a problem, so the position becomes a genuine one rather than a constraint to work around. The real measure of Professor Ducky is not what happens in the conversation. It is whether the student leaves it thinking a little more clearly than when they arrived.</div>
-        </details>
-
-      </div>
-    </div>
-
-    <div>
-      <div class="card" style="margin-bottom:16px">
-        <div class="section-label">Resources</div>
-        <div class="resource-list">
-          <a class="resource-item" href="presentation.html">
-            <span class="resource-icon">🎞️</span>
-            <div class="resource-text">
-              <strong>View the presentation</strong>
-              <span>Narrated slideshow — 10 slides with auto-play voice</span>
-            </div>
-          </a>
-          <a class="resource-item" href="professor_ducky_essay.pdf" download>
-            <span class="resource-icon">📄</span>
-            <div class="resource-text">
-              <strong>Download essay (PDF)</strong>
-              <span>Full written essay as a PDF document</span>
-            </div>
-          </a>
-          <a class="resource-item" href="#transcript">
-            <span class="resource-icon">📝</span>
-            <div class="resource-text">
-              <strong>Narration transcript</strong>
-              <span>Full text of the presentation voiceover</span>
-            </div>
-          </a>
-          <a class="resource-item" href="https://professor-ducky.vercel.app/" target="_blank" rel="noopener">
-            <span class="resource-icon">🌐</span>
-            <div class="resource-text">
-              <strong>Live demo</strong>
-              <span>Try the full application at professor-ducky.vercel.app</span>
-            </div>
-          </a>
-          <a class="resource-item" href="https://chatgpt.com/g/g-6a3be8563af08191bba52d8e07f482c9-professor-ducky" target="_blank" rel="noopener">
-            <span class="resource-icon">🤖</span>
-            <div class="resource-text">
-              <strong>Use the Custom GPT</strong>
-              <span>Try Professor Ducky directly on ChatGPT</span>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="section-label">About this project</div>
-        <div style="font-size:.88rem;line-height:1.65;color:var(--muted)">
-          <p style="margin:0 0 .75rem">Professor Ducky is a Custom GPT built as a university project, exploring how AI can support student learning without replacing the thinking process.</p>
-          <p style="margin:0 0 .75rem">It draws on the rubber duck debugging principle — the act of explaining your reasoning out loud to a non-judgemental listener often reveals where thinking breaks down, without anyone needing to hand you the answer.</p>
-          <p style="margin:0">The project covers prompt architecture, academic integrity design, adaptive teaching modes, and pastoral safeguarding — all embedded in a conversational AI companion.</p>
-        </div>
-      </div>
-    </div>
-
+  <div class="card about-card">
+    <div class="section-label">About this project</div>
+    <p>Professor Ducky is a Custom GPT built for the Arden University Custom GPT Challenge, exploring how AI can support student learning without replacing the thinking process.</p>
+    <p>It draws on the rubber duck debugging principle: the act of explaining your reasoning out loud to a patient, non-judgemental listener often reveals where your thinking breaks down, without anyone needing to hand you the answer. The project was also built with neurodivergent learners in mind, particularly students with ADHD, for whom the fear of judgement and the unpredictability of scheduled support can be significant barriers.</p>
+    <p>The Custom GPT uses a layered instruction architecture, four adaptive teaching modes, academic integrity safeguards, and a pastoral escalation system. The submission also includes a standalone demonstration application with a 3D animated duck, voice conversation, and a Blackboard feature for diagrams and traces.</p>
+    <p style="font-size:.82rem;color:var(--muted)">Ian Millichamp &nbsp;&middot;&nbsp; BSc Computing &nbsp;&middot;&nbsp; Arden University &nbsp;&middot;&nbsp; STU212788</p>
   </div>
+
+  <div class="resources-grid">
+    <div class="card">
+      <div class="section-label">Presentation and documents</div>
+      <div class="resource-list">
+        <a class="resource-item" href="presentation.html">
+          <span class="resource-icon">🎞️</span>
+          <div class="resource-text">
+            <strong>Narrated slide presentation</strong>
+            <span>10 slides with voiceover narration and auto-play</span>
+          </div>
+        </a>
+        <a class="resource-item" href="essay.html">
+          <span class="resource-icon">📖</span>
+          <div class="resource-text">
+            <strong>Read the supporting essay</strong>
+            <span>Full written essay — opens in a readable page viewer</span>
+          </div>
+        </a>
+        <a class="resource-item" href="professor_ducky_essay.pdf" download>
+          <span class="resource-icon">📄</span>
+          <div class="resource-text">
+            <strong>Download essay as PDF</strong>
+            <span>Save a copy of the submitted essay</span>
+          </div>
+        </a>
+        <a class="resource-item" href="transcript.html">
+          <span class="resource-icon">📝</span>
+          <div class="resource-text">
+            <strong>Presentation narration transcript</strong>
+            <span>Full text of the voiceover, slide by slide</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-label">Try Professor Ducky</div>
+      <div class="resource-list">
+        <a class="resource-item" href="https://professor-ducky.vercel.app/" target="_blank" rel="noopener">
+          <span class="resource-icon">🌐</span>
+          <div class="resource-text">
+            <strong>Live demonstration app</strong>
+            <span>Full 3D animated duck with voice conversation</span>
+          </div>
+        </a>
+        <a class="resource-item" href="https://chatgpt.com/g/g-6a3be8563af08191bba52d8e07f482c9-professor-ducky" target="_blank" rel="noopener">
+          <span class="resource-icon">🤖</span>
+          <div class="resource-text">
+            <strong>Use the Custom GPT on ChatGPT</strong>
+            <span>Try Professor Ducky directly — no setup needed</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
 </main>
 
 <footer class="footer">
   <div class="wrap">
-    <div class="small">Professor Ducky — University Project</div>
+    <div class="small">Professor Ducky &nbsp;&middot;&nbsp; Arden University Custom GPT Challenge &nbsp;&middot;&nbsp; Ian Millichamp</div>
   </div>
 </footer>
 
@@ -267,11 +202,13 @@
 <script>
   var backdrop = document.getElementById('a11yBackdrop');
   var modal = document.getElementById('a11yModal');
-  function openModal(){ backdrop.hidden = false; modal.hidden = false; }
-  function closeModal(){ backdrop.hidden = true; modal.hidden = true; }
+  function openModal(){ backdrop.hidden = false; modal.hidden = false; modal.querySelector('select,input,button').focus(); }
+  function closeModal(){ backdrop.hidden = true; modal.hidden = true; document.getElementById('openA11y').focus(); }
   document.getElementById('openA11y').addEventListener('click', openModal);
   document.getElementById('closeA11y').addEventListener('click', closeModal);
   backdrop.addEventListener('click', closeModal);
 </script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script>function googleTranslateElementInit(){ new google.translate.TranslateElement({pageLanguage:'en',layout:google.translate.TranslateElement.InlineLayout.SIMPLE},'google_translate_element'); }</script>
 </body>
 </html>

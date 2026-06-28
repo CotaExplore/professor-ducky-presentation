@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Essay — Professor Ducky</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    :root { --brand:#1c6b58; --accent:#d4a017; }
+    .topbar { position:sticky; top:0; z-index:60; background:color-mix(in srgb,var(--bg) 92%,transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); }
+    .topbar .row { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:.75rem 0; }
+    .brand { display:flex; align-items:center; gap:.6rem; text-decoration:none; color:inherit; }
+    .brand-name { font-size:1.05rem; font-weight:700; color:var(--brand); }
+    .nav-actions { display:flex; gap:.5rem; flex-wrap:wrap; justify-content:flex-end; align-items:center; }
+    .pill { display:inline-flex; align-items:center; gap:.55rem; border:1px solid var(--border); background:color-mix(in srgb,var(--bg) 85%,#fff); border-radius:999px; padding:.45rem .65rem; font-size:.9rem; }
+    .pill .label { color:var(--muted); font-size:.88em; }
+    .pdf-page { padding:20px 0 40px; }
+    .pdf-frame { width:100%; height:calc(100vh - 130px); min-height:600px; border:1px solid var(--border); border-radius:14px; overflow:hidden; display:block; }
+    .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:80; }
+    .modal { position:fixed; inset:0; z-index:90; display:flex; align-items:center; justify-content:center; pointer-events:none; }
+    .modal-card { background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); padding:1.2rem 1.4rem; width:min(420px,92vw); pointer-events:all; box-shadow:0 20px 60px rgba(0,0,0,.18); }
+    .modal-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; }
+    .modal-head h3 { margin:0; font-size:1.05rem; }
+    .modal-body .field { margin-bottom:.85rem; display:flex; flex-direction:column; gap:.35rem; }
+    .modal-body label { font-size:.88rem; display:flex; align-items:center; gap:.45rem; }
+    .modal-body select, .modal-body input[type=range] { font:inherit; border:1px solid var(--border); border-radius:8px; padding:.35rem .5rem; background:var(--bg); color:var(--fg); }
+  </style>
+</head>
+<body>
+<div id="a11y-live" aria-live="polite" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;"></div>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="row">
+      <a class="brand" href="index.html">
+        <img src="duck.png" alt="Professor Ducky" style="width:2rem;height:2rem;border-radius:6px;object-fit:cover;" />
+        <span class="brand-name">Professor Ducky</span>
+      </a>
+      <div class="nav-actions">
+        <div class="pill">
+          <span class="label">Translate</span>
+          <span id="google_translate_element"></span>
+        </div>
+        <button class="btn" id="openA11y" type="button">Accessibility</button>
+        <a class="btn" href="professor_ducky_essay.pdf" download>Download PDF</a>
+        <a class="btn" href="index.html">Home</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="modal-backdrop" id="a11yBackdrop" hidden></div>
+<div class="modal" id="a11yModal" role="dialog" aria-modal="true" hidden>
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3>Accessibility</h3>
+      <button class="btn" id="closeA11y" type="button">Close</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label><b>Theme</b></label>
+        <select id="themeSelect">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+          <option value="contrast">High contrast</option>
+          <option value="dyslexia">Dyslexia (warm)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label><b>Text size</b> <span id="fontSizeLabel">100%</span></label>
+        <input id="fontSizeRange" type="range" min="90" max="150" step="5" value="100" />
+      </div>
+      <div class="field">
+        <label><input id="toggleReduceMotion" type="checkbox" /> Reduce motion</label>
+        <label><input id="toggleUnderline" type="checkbox" /> Underline links</label>
+        <label><input id="toggleReadable" type="checkbox" /> Readable mode</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="wrap pdf-page">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:14px;flex-wrap:wrap;">
+    <div>
+      <div style="font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:.2rem">Supporting essay</div>
+      <h1 style="margin:0;font-size:1.35rem;">Professor Ducky</h1>
+      <div class="small">Ian Millichamp &nbsp;&middot;&nbsp; BSc Computing &nbsp;&middot;&nbsp; Arden University</div>
+    </div>
+    <a class="btn primary" href="professor_ducky_essay.pdf" download>Download PDF</a>
+  </div>
+  <iframe class="pdf-frame" src="professor_ducky_essay.pdf" title="Professor Ducky essay"></iframe>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="small">Professor Ducky &nbsp;&middot;&nbsp; Arden University Custom GPT Challenge</div>
+  </div>
+</footer>
+
+<script src="a11y-theme.js"></script>
+<script>
+  var backdrop = document.getElementById('a11yBackdrop');
+  var modal = document.getElementById('a11yModal');
+  function openModal(){ backdrop.hidden=false; modal.hidden=false; }
+  function closeModal(){ backdrop.hidden=true; modal.hidden=true; }
+  document.getElementById('openA11y').addEventListener('click', openModal);
+  document.getElementById('closeA11y').addEventListener('click', closeModal);
+  backdrop.addEventListener('click', closeModal);
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script>function googleTranslateElementInit(){ new google.translate.TranslateElement({pageLanguage:'en',layout:google.translate.TranslateElement.InlineLayout.SIMPLE},'google_translate_element'); }</script>
+</body>
+</html>
