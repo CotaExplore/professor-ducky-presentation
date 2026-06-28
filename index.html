@@ -367,32 +367,58 @@ function stopVoice() {
   document.getElementById('btn-voice').textContent = '▶ Read this slide';
 }
 
+function chunkText(text, max) {
+  var chunks = [];
+  var words = text.split(' ');
+  var cur = '';
+  for (var i = 0; i < words.length; i++) {
+    var w = words[i];
+    if ((cur + ' ' + w).trim().length > max && cur.length > 0) {
+      chunks.push(cur.trim());
+      cur = w;
+    } else {
+      cur = (cur + ' ' + w).trim();
+    }
+  }
+  if (cur) chunks.push(cur);
+  return chunks;
+}
+
+function playVRChunks(chunks, callback) {
+  if (!voiceActive || chunks.length === 0) {
+    stopVoice();
+    if (voiceActive === false && callback) callback();
+    return;
+  }
+  var key = '36750ca26b174c7cb84033f72f07ab24';
+  var url = 'https://api.voicerss.org/?key=' + key + '&hl=en-gb&v=Harry&c=MP3&f=44khz_16bit_stereo&src=' + encodeURIComponent(chunks[0]);
+  var audio = new Audio(url);
+  window._vrAudio = audio;
+  var fired = false;
+  function next() {
+    if (fired) return;
+    fired = true;
+    clearInterval(window._vrPoll);
+    if (!voiceActive) return;
+    playVRChunks(chunks.slice(1), callback);
+  }
+  audio.addEventListener('ended', next);
+  audio.addEventListener('error', next);
+  window._vrPoll = setInterval(function() {
+    if (!audio || audio !== window._vrAudio) { clearInterval(window._vrPoll); return; }
+    if (audio.ended || (audio.duration > 0 && audio.currentTime >= audio.duration - 0.1)) { next(); }
+  }, 500);
+  audio.play().catch(next);
+}
+
 function speakSlide(callback) {
   stopVoice();
   voiceActive = true;
   document.getElementById('voice-dot').classList.add('speaking');
   document.getElementById('voice-status').textContent = 'Speaking...';
   document.getElementById('btn-voice').textContent = '■ Stop reading';
-  var key = '36750ca26b174c7cb84033f72f07ab24';
-  var text = encodeURIComponent(narration[current - 1]);
-  var url = 'https://api.voicerss.org/?key=' + key + '&hl=en-gb&v=Harry&c=MP3&f=44khz_16bit_stereo&src=' + text;
-  var audio = new Audio(url);
-  window._vrAudio = audio;
-  var fired = false;
-  function onDone() {
-    if (fired) return;
-    fired = true;
-    clearInterval(window._vrPoll);
-    stopVoice();
-    if (callback) callback();
-  }
-  audio.addEventListener('ended', onDone);
-  audio.addEventListener('error', onDone);
-  window._vrPoll = setInterval(function() {
-    if (!audio || audio !== window._vrAudio) { clearInterval(window._vrPoll); return; }
-    if (audio.ended || (audio.duration > 0 && audio.currentTime >= audio.duration - 0.1)) { onDone(); }
-  }, 500);
-  audio.play().catch(onDone);
+  var chunks = chunkText(narration[current - 1], 90);
+  playVRChunks(chunks, function() { stopVoice(); if (callback) callback(); });
 }
 
 function toggleVoice() {
