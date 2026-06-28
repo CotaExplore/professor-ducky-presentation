@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="https://js.puter.com/v2/"></script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Professor Ducky — Auto Presentation</title>
@@ -300,8 +300,8 @@ body { background:#0d1520; font-family:Georgia,serif; color:#f5f0e8; overflow:hi
       <div class="voice-dot" id="voice-dot"></div>
       <span id="voice-status">Voice ready</span>
     </div>
-    <button class="ctrl-btn" id="btn-voice" onclick="toggleVoice()">&#9654; Play</button>
-    <button class="ctrl-btn" id="btn-auto" onclick="toggleAuto()">&#9654;&#9654; Auto-play</button>
+    <button class="ctrl-btn" id="btn-voice" onclick="toggleVoice()">&#9654; Read this slide</button>
+    <button class="ctrl-btn" id="btn-auto" onclick="toggleAuto()">&#9654;&#9654; Auto-play all slides</button>
   </div>
 </div>
 
@@ -358,14 +358,12 @@ function changeSlide(dir) {
   if (next >= 1 && next <= TOTAL) { current = next; updateUI(); }
 }
 
-let puterAudio = null;
-
 function stopVoice() {
-  if (puterAudio) { puterAudio.pause(); puterAudio = null; }
+  if (window._vrAudio) { window._vrAudio.pause(); window._vrAudio = null; }
   voiceActive = false;
   document.getElementById('voice-dot').classList.remove('speaking');
   document.getElementById('voice-status').textContent = 'Voice ready';
-  document.getElementById('btn-voice').textContent = '▶ Play';
+  document.getElementById('btn-voice').textContent = '▶ Read this slide';
 }
 
 function speakSlide(callback) {
@@ -373,15 +371,16 @@ function speakSlide(callback) {
   voiceActive = true;
   document.getElementById('voice-dot').classList.add('speaking');
   document.getElementById('voice-status').textContent = 'Speaking...';
-  document.getElementById('btn-voice').textContent = '■ Stop';
-  puter.ai.txt2speech(narration[current - 1], { provider: 'xai', voice: 'rex', output_format: 'mp3' })
-    .then(function(audio) {
-      if (!voiceActive) return;
-      puterAudio = audio;
-      audio.onended = function() { stopVoice(); if (callback) callback(); };
-      audio.play();
-    })
-    .catch(function() { stopVoice(); });
+  document.getElementById('btn-voice').textContent = '■ Stop reading';
+  var key = '36750ca26b174c7cb84033f72f07ab24';
+  var text = encodeURIComponent(narration[current - 1]);
+  var url = 'https://api.voicerss.org/?key=' + key + '&hl=en-gb&v=Harry&c=MP3&f=44khz_16bit_stereo&src=' + text;
+  var audio = new Audio(url);
+  window._vrAudio = audio;
+  audio.addEventListener('ended', function() { stopVoice(); if (callback) callback(); });
+  audio.addEventListener('error', function() { stopVoice(); });
+  audio.load();
+  audio.play().catch(function() { stopVoice(); });
 }
 
 function toggleVoice() {
@@ -392,7 +391,7 @@ function stopAuto() {
   autoMode = false;
   clearTimeout(autoTimer);
   stopVoice();
-  document.getElementById('btn-auto').textContent = '\u25B6\u25B6 Auto-play';
+  document.getElementById('btn-auto').textContent = '\u25B6\u25B6 Auto-play all slides';
   document.getElementById('btn-auto').classList.remove('active');
 }
 
@@ -416,7 +415,7 @@ function toggleAuto() {
     stopAuto();
   } else {
     autoMode = true;
-    document.getElementById('btn-auto').textContent = '\u25A0 Stop auto';
+    document.getElementById('btn-auto').textContent = '\u25A0 Stop auto-play';
     document.getElementById('btn-auto').classList.add('active');
     if (current > TOTAL) current = 1;
     runAutoSlide();
