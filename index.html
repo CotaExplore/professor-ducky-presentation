@@ -359,6 +359,7 @@ function changeSlide(dir) {
 }
 
 function stopVoice() {
+  clearInterval(window._vrPoll);
   if (window._vrAudio) { window._vrAudio.pause(); window._vrAudio = null; }
   voiceActive = false;
   document.getElementById('voice-dot').classList.remove('speaking');
@@ -377,9 +378,21 @@ function speakSlide(callback) {
   var url = 'https://api.voicerss.org/?key=' + key + '&hl=en-gb&v=Harry&c=MP3&f=44khz_16bit_stereo&src=' + text;
   var audio = new Audio(url);
   window._vrAudio = audio;
-  audio.addEventListener('ended', function() { stopVoice(); if (callback) callback(); });
-  audio.addEventListener('error', function() { stopVoice(); if (callback) callback(); });
-  audio.play().catch(function() { stopVoice(); if (callback) callback(); });
+  var fired = false;
+  function onDone() {
+    if (fired) return;
+    fired = true;
+    clearInterval(window._vrPoll);
+    stopVoice();
+    if (callback) callback();
+  }
+  audio.addEventListener('ended', onDone);
+  audio.addEventListener('error', onDone);
+  window._vrPoll = setInterval(function() {
+    if (!audio || audio !== window._vrAudio) { clearInterval(window._vrPoll); return; }
+    if (audio.ended || (audio.duration > 0 && audio.currentTime >= audio.duration - 0.1)) { onDone(); }
+  }, 500);
+  audio.play().catch(onDone);
 }
 
 function toggleVoice() {
