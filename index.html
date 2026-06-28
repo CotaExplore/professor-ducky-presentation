@@ -367,17 +367,17 @@ function stopVoice() {
   document.getElementById('btn-voice').textContent = '▶ Read this slide';
 }
 
-function chunkText(text, max) {
+function chunkText(text) {
+  var sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
   var chunks = [];
-  var words = text.split(' ');
   var cur = '';
-  for (var i = 0; i < words.length; i++) {
-    var w = words[i];
-    if ((cur + ' ' + w).trim().length > max && cur.length > 0) {
+  for (var i = 0; i < sentences.length; i++) {
+    var s = sentences[i].trim();
+    if ((cur + ' ' + s).trim().length > 250 && cur.length > 0) {
       chunks.push(cur.trim());
-      cur = w;
+      cur = s;
     } else {
-      cur = (cur + ' ' + w).trim();
+      cur = (cur + ' ' + s).trim();
     }
   }
   if (cur) chunks.push(cur);
@@ -417,7 +417,7 @@ function speakSlide(callback) {
   document.getElementById('voice-dot').classList.add('speaking');
   document.getElementById('voice-status').textContent = 'Speaking...';
   document.getElementById('btn-voice').textContent = '■ Stop reading';
-  var chunks = chunkText(narration[current - 1], 90);
+  var chunks = chunkText(narration[current - 1]);
   playVRChunks(chunks, function() { stopVoice(); if (callback) callback(); });
 }
 
@@ -455,7 +455,7 @@ function toggleAuto() {
     autoMode = true;
     document.getElementById('btn-auto').textContent = '\u25A0 Stop auto-play';
     document.getElementById('btn-auto').classList.add('active');
-    if (current > TOTAL) current = 1;
+    current = 2;
     runAutoSlide();
   }
 }
