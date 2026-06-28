@@ -336,6 +336,7 @@ function updateUI() {
   document.getElementById('slide-' + current).classList.add('active');
   document.getElementById('slide-counter').textContent = 'Slide ' + current + ' of ' + TOTAL;
   document.getElementById('progress').style.width = (current / TOTAL * 100) + '%';
+  document.getElementById('btn-voice').style.display = current === 1 ? 'none' : '';
 }
 
 function changeSlide(dir) {
